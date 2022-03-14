@@ -142,7 +142,7 @@ input {
     .container_user{
         width: 15%;
         height: 100px;
-		padding-right: 15px;
+
         float: right;
 
         /* CENTERS EVERYTHING IN THE DIV (NOT THE DIV ITS SELF) */
