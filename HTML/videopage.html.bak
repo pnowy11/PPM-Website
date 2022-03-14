@@ -76,9 +76,7 @@ Recommended
 <input type="image" id="img" height="110" width="190"  src="slideshow/img7.png" onclick="">
 <input type="image" id="img" height="110" width="190"  src="slideshow/img8.png" onclick="">
 </div>
-<div></div>
-<br>
-<Br>
+<div class="content"></div>
 
 </body>
 
