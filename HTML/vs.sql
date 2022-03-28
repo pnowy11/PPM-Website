@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 11, 2022 at 01:39 PM
+-- Generation Time: Mar 17, 2022 at 07:22 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 5.6.39
 
@@ -44,15 +44,16 @@ CREATE TABLE `comments` (
 CREATE TABLE `login` (
   `ID` int(11) NOT NULL,
   `USERNAME` varchar(50) NOT NULL,
-  `PASSWORD` varchar(50) NOT NULL
+  `PASSWORD` varchar(50) NOT NULL,
+  `EMAIL` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `login`
 --
 
-INSERT INTO `login` (`ID`, `USERNAME`, `PASSWORD`) VALUES
-(1, 'admin', 'admin123');
+INSERT INTO `login` (`ID`, `USERNAME`, `PASSWORD`, `EMAIL`) VALUES
+(1, 'admin', '202cb962ac59075b964b07152d234b70', 'admin@test.com');
 
 -- --------------------------------------------------------
 
@@ -114,6 +115,16 @@ ALTER TABLE `user`
 --
 ALTER TABLE `videos`
   ADD PRIMARY KEY (`VIDEOID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `login`
+--
+ALTER TABLE `login`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

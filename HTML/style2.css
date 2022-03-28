@@ -54,6 +54,10 @@ div {
 .clear{
 	clear:both;
 }
+.styling{
+	padding-left:30px;
+	text-align: left;
+}
 p {
 	font-size: 20px;
 	font-family: arial;
@@ -61,6 +65,12 @@ p {
 input {
 	text-align: center;
 	left:100px;
+}
+.comments {
+	height:25%;
+	padding-left:5%;
+	text-align: left;
+	color:white;
 }
 /* HEADER */
 
@@ -74,7 +84,7 @@ input {
     .container_logo{
         width: 9%;
         height: 100px;
-		padding-right: 2%;
+		padding-left: 1%;
 
         float: left;
 
@@ -93,6 +103,7 @@ input {
         height: 100px;
 
         float: left;
+		padding-left: 1%;
 
         /* CENTERS EVERYTHING IN THE DIV (NOT THE DIV ITS SELF) */
         display: flex;

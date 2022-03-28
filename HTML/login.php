@@ -1,10 +1,11 @@
 <?php
+session_start();
 include_once "config.php";
 if(isset($_POST['submit'])){
     $uname = mysqli_real_escape_string($con,$_POST['username']);
     $password = mysqli_real_escape_string($con,$_POST['password']);
     if ($uname != "" && $password != ""){
-        $sql_query = "select count(*) as cntUser from login where USERNAME='".$uname."' and PASSWORD='".$password."'";
+        $sql_query = "select count(*) as cntUser from login where USERNAME='".$uname."' and PASSWORD='".md5($password)."'";
         $result = mysqli_query($con,$sql_query);
         $row = mysqli_fetch_array($result);
         $count = $row['cntUser'];
@@ -59,18 +60,18 @@ if(isset($_POST['submit'])){
                         <h3 class="text-center text-info">Login</h3>
                         <div class="form-group">
                             <label for="username" class="text-info">Username:</label><br>
-                            <input type="text" name="username" id="username" class="form-control">
+                            <input type="text" name="username" id="username" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="password" class="text-info">Password:</label><br>
-                            <input type="password" name="password" id="password" class="form-control">
+                            <input type="password" name="password" id="password" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
                             <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
                         </div>
                         <div id="register-link" class="text-right">
-                            <a href="#" class="text-info">Register here</a>
+                            <a href="register.php" class="text-info">Register here</a>
                         </div>
                     </form>
                 </div>
