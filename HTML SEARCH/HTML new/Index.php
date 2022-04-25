@@ -1,0 +1,273 @@
+<?php
+session_start();
+include "config.php";
+if(isset($_GET['Logout'])){
+    session_destroy();
+    header('Location: index.php');
+}
+if (isset($_POST['submit1'])) {
+    $uname = mysqli_real_escape_string($con, $_POST['name']);
+    $password = mysqli_real_escape_string($con, $_POST['psw']);
+    if ($uname != "" && $password != "") {
+        $sql_query = "select * from login where USERNAME='" . $uname . "' and PASSWORD='" . md5($password) . "'";
+        $result = mysqli_query($con, $sql_query);
+        $row = mysqli_fetch_array($result);
+        $id = $row['ID'];
+        if ($row > 0) {
+            $_SESSION['USERNAME'] = $uname;
+            $_SESSION['ID'] = $id;
+            header('Location: index.php');
+        } else {
+            echo "<script> alert('Invalid username and password');</script>";
+        }
+    }
+}
+?>
+<html>
+<title>Student Hub</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1"> <!--important for media queries-->
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+
+    <style>
+        .mydivouter{
+            position:relative;
+        }
+        .mydivoverlap{
+            position: relative;
+            z-index: 1;
+        }
+        .mybuttonoverlap{
+            position: absolute;
+            z-index: 2;
+            top: 44px;
+            display: none;
+            left: 59px;
+        }
+        .mydivouter:hover .mybuttonoverlap{
+            display:block;
+        }
+
+
+        .container .btn {
+            position: absolute;
+            /*top: 50%;*/
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            background-color: #f1f1f1;
+            color: black;
+            font-size: 16px;
+            padding: 16px 30px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .container .btn:hover {
+            background-color: black;
+            color: white;
+        }
+
+
+        body {font-family: Arial, Helvetica, sans-serif;}
+        * {box-sizing: border-box;}
+
+        /* Button used to open the contact form - fixed at the bottom of the page */
+        .open-button {
+            background-color: #555;
+            color: white;
+            border: none;
+            cursor: pointer;
+            opacity: 0.8;
+            position: center;
+
+        }
+
+        /* The popup form - hidden by default */
+        .form-popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 15px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+        }
+
+        /* Add styles to the form container */
+        .form-container {
+            max-width: 300px;
+            padding: 10px;
+            background-color: white;
+        }
+
+        /* Full-width input fields */
+        .form-container input[type=text], .form-container input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            border: none;
+            background: #f1f1f1;
+        }
+
+        /* When the inputs get focus, do something */
+        .form-container input[type=text]:focus, .form-container input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+
+        /* Set a style for the submit/login button */
+        .form-container .btn1 {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom:10px;
+            opacity: 0.8;
+        }
+
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+            background-color: red;
+        }
+
+        /* Add some hover effects to buttons */
+        .form-container .btn1:hover, .open-button:hover {
+            opacity: 1;
+        }
+
+
+
+
+
+
+
+
+
+    </style>
+
+    <div class="header">
+
+        <!-- LOGO CONTAINER -->
+        <div class="container_logo">
+            <img src="images/thumbnail.png" alt="zoom glass" height="60px" width="250px">
+        </div>
+
+        <!-- SEARCH BAR CONTAINER -->
+		
+		<form action="search.php" method="POST">
+            <div class="container_search">
+
+                <div class="search_bar">
+                    <div class="search_img">
+                        <img src="images/search.png" alt="zoom glass" height="40px">
+                    </div>
+                    <input type="text" placeholder="Search for an item..." name="query">
+                </div>
+                <input type="submit" name="search" value="search">
+
+            </div>
+        </form>
+
+        <!--User details CONTAINER -->
+        <div class="container_user">
+            <P>Welcome, <?php if(isset($_SESSION['USERNAME'])){echo $_SESSION['USERNAME'];}
+                else echo "User"?></P>
+
+            <div class="user_img">
+                <img src="images/user.png" alt="user icon" height="60px">
+            </div>
+        </div>
+    </div>
+
+    <!-- NAV BAR -->
+    <div class="nav">
+        <nav>
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="">Explore</a></li>
+                <li><a href="">Liked</a></li>
+                <li><a href="commingsoon.html">Live Stream</a></li>
+                <?php
+                if(!empty($_SESSION["USERNAME"]))
+                {
+                    echo '<li><a href="index.php?Logout=" name="Logout" id="Logout">Logout</a></li>';
+
+                }
+                else
+                {
+                    echo '<li><a href="login.php">Login</a></li>';
+                }
+                ?>
+            </ul>
+        </nav>
+    </div>
+    <!--gives extra space-->
+</head>
+<body>
+<script type="text/javascript" src="PPM.js"></script>
+<h1>
+    Latest Videos
+</h1>
+<br>
+<div class="container" style="float: right; position: relative; margin-left: 7%">
+    <?php
+    $fetchVideos = mysqli_query($con, "SELECT * FROM videos ORDER BY video_id DESC");
+    while($row = mysqli_fetch_assoc($fetchVideos)){
+        $location = $row['video_Path'];
+        $name = $row['video_Name'];
+        $id = $row['video_Id'];
+        echo "
+          <div style='float: left; margin-left: 2%'>
+          <div class='mydivouter'>
+          <video src='".$location."' controls width='320px' height='200px'></video>     
+          <br>          
+           <h2 style='text-align: center; color: white; margin-bottom: 5%; margin-top: auto;'>".$name."</h2>
+           <a class='open-button mybuttonoverlap btn' style='margin-top:20%' onclick='openForm(".$id.")'>Comments</a>
+           </div>
+           </div>
+    ";
+    }?>
+    <div class="form-popup" id="myForm">
+        <form action="/action_page.php" class="form-container">
+            <h1>Login</h1>
+
+            <label for="email"><b>Email</b></label>
+            <input type="text" placeholder="Enter Email" name="email" required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+
+            <button type="submit" class="btn1">Login</button>
+            <button type="button" class="btn1 cancel" onclick="closeForm()">Close</button>
+        </form>
+    </div>
+</div>
+
+
+
+</body>
+<footer>
+    <p>Student Hub © 2022 All Rights Reserved</p>
+    <script>
+        function openForm(x) {
+           <?php if(!isset($_SESSION['USERNAME'])){?>
+            document.getElementById("myForm").style.display = "block";
+
+                <?php }
+            else {?>
+            window.location.href='comment.php?id=' + x;
+        <?php }?>
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+</footer>
+</html>
