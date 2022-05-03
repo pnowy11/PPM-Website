@@ -160,8 +160,8 @@ if (isset($_POST['submit1'])) {
 
         <!-- SEARCH BAR CONTAINER -->
 		
-		<form action="search.php" method="POST" class="container_search">
-            <div >
+		<form action="search.php" method="POST">
+            <div class="container_search">
 
                 <div class="search_bar">
                     <div class="search_img">
